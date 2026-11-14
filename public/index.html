@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pulse Events KE: tickets and event marketing in Kenya</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07100b;--ink:#f8f3e8;--mute:#b9c4b4;--a:hsl(0 85% 58%);--b:hsl(110 85% 52%);--card:rgba(10,24,16,.66);--line:rgba(255,255,255,.17);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.shade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(3,8,5,.78) 100%)}
+nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:6;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;gap:10px}
+.logo{font:800 20px Syne,sans-serif;letter-spacing:.02em}
+.btn{display:inline-block;border:0;cursor:pointer;font:600 15px "DM Sans",sans-serif;color:#10100c;background:linear-gradient(90deg,var(--a),var(--b));padding:12px 22px;border-radius:999px;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px var(--a)}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+:focus-visible{outline:3px solid #fff;outline-offset:3px}
+main{position:relative;z-index:2}
+section{padding:90px 20px;max-width:1100px;margin:0 auto}
+section.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+h1,h2{font-family:Syne,sans-serif;font-weight:800;line-height:1;margin:0 0 18px;letter-spacing:-.02em}
+h1{font-size:clamp(46px,11vw,120px)}h2{font-size:clamp(32px,6.5vw,60px)}
+.lead{color:var(--mute);max-width:48ch;font-size:19px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.chip{border:1px solid var(--line);background:var(--card);backdrop-filter:blur(8px);padding:6px 14px;border-radius:999px;font-size:14px;color:var(--ink);font-family:inherit;cursor:default}
+button.chip{cursor:pointer}button.chip.on{background:var(--a);color:#10100c;border-color:transparent}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));margin-top:18px}
+.ev{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--card);backdrop-filter:blur(12px);cursor:pointer;display:flex;flex-direction:column;transition:transform .25s,border-color .25s;text-align:left;color:inherit;font:inherit;padding:0}
+.ev:hover{transform:translateY(-6px);border-color:var(--a)}
+.ev .art{height:150px;padding:16px;display:flex;align-items:flex-end;font:800 26px/1 Syne,sans-serif;position:relative}
+.ev .badge{position:absolute;top:12px;right:12px;font:600 12px "DM Sans";background:#fff;color:#111;padding:4px 10px;border-radius:99px}
+.ev .bd{padding:16px 18px 20px;display:grid;gap:4px;color:var(--mute);font-size:15px}.ev b{color:var(--ink);font-size:18px}
+.panel{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:22px;padding:24px}
+form{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+label{display:grid;gap:6px;color:var(--mute);font-size:14px}.full{grid-column:1/-1}
+input,select,textarea{width:100%;font:500 16px "DM Sans",sans-serif;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#07100b;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+.pk{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-top:16px}
+.pk .panel{display:flex;flex-direction:column;gap:8px}.pk h3{font:800 24px Syne,sans-serif;margin:0}.price{font:800 36px Syne,sans-serif}
+.pk ul,.tier ul{margin:0;padding-left:18px;color:var(--mute)}
+.dv{position:fixed;inset:0;z-index:15;overflow:auto;background:rgba(0,0,0,.12);padding:70px 20px 60px}
+.bgw{position:fixed;inset:0;z-index:14;pointer-events:none}.bgw[hidden]{display:none}.v2,.g2{position:absolute;inset:0}.v2{background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.72) 100%)}.g2{opacity:.14;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.more{display:none}.ev.open .more{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}.ev .row{margin:8px 0 0}
+.clip{height:90px;border-radius:14px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mute);text-align:center;padding:8px}
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:16px}.tile{height:120px;border-radius:16px;display:flex;align-items:flex-end;padding:12px;font-weight:500;border:1px solid var(--line)}
+details{border-bottom:1px solid var(--line);padding:10px 0}summary{cursor:pointer;font-weight:500}
+.dv[hidden],.mp[hidden]{display:none}
+.dv .in{max-width:900px;margin:0 auto}
+.tier{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:16px 0}
+.tier:last-child{border:0}.tier .p{font:800 26px Syne,sans-serif}.left{color:var(--a);font-size:14px}
+.mp{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:20px}
+.box{background:#0d1d14;border:1px solid var(--line);border-radius:22px;padding:26px;width:100%;max-width:400px;display:grid;gap:10px}
+.toast{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;background:#0d1d14;border:1px solid var(--line);border-radius:16px;padding:12px 16px;font-size:14px;max-width:calc(100vw - 32px);opacity:0;transform:translateY(20px);transition:.5s}
+.toast.show{opacity:1;transform:none}
+footer{position:relative;z-index:2;color:var(--mute);padding:50px 20px 80px;font-size:15px;background:rgba(3,8,5,.7);border-top:1px solid var(--line)}
+.fw{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:1100px;margin:0 auto;text-align:left}footer a,footer span{display:block;color:var(--mute);text-decoration:none;margin:6px 0}footer b{color:var(--ink);display:block;margin-bottom:6px}footer p{margin:0}.cp{text-align:center;margin-top:34px!important;font-size:14px}
+.steps{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:18px}.steps .panel{color:var(--mute)}.steps .panel b{font:800 22px Syne,sans-serif;display:block;margin-bottom:6px;color:var(--ink)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ev{transition:none}}
+</style></head><body>
+<canvas id="gl" aria-hidden="true"></canvas><div class="shade"></div>
+<div id="bgw" class="bgw" hidden><canvas id="bg2" aria-hidden="true"></canvas><div class="g2"></div><div class="v2"></div></div>
+<nav><span class="logo"><span style="background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Pulse</span> Events KE</span><span class="row" style="margin:0"><a class="btn" href="#post">Post an event</a></span></nav>
+<main>
+<section class="hero">
+ <div class="row" style="margin-bottom:14px"><span class="chip" style="color:var(--a);border-color:var(--a);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase">⚡ Daytime Summits • Sunset Raves • Live Concerts • Festivals</span></div>
+ <h1>Your next <span style="background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unforgettable experience</span> starts here.</h1>
+ <p class="lead">From daytime tech summits and cultural food festivals to electric concerts and sunset beach raves. Get tickets in seconds with M-Pesa. Organizers: sell out faster with built-in promotion.</p>
+ <div class="row"><a class="btn" href="#events">Get tickets</a><a class="btn ghost" href="#post">Post your event</a></div>
+ <div id="feat"></div>
+</section>
+<section id="events">
+ <h2>What is on</h2>
+ <div class="row" id="cats" role="group" aria-label="Filter by category"></div>
+ <div class="grid" id="grid"></div>
+</section>
+<section id="post">
+ <h2>Post your event</h2>
+ <p class="lead">Listing takes a minute. Add your tickets, then boost it so more people see it.</p>
+ <form class="panel" id="form">
+  <label class="full">Event name<input id="f-t" required maxlength="60" placeholder="Nyama Choma Festival"></label>
+  <label>Category<select id="f-c"></select></label>
+  <label>Date<input id="f-d" type="date" required></label>
+  <label>Venue and town<input id="f-v" required maxlength="60" placeholder="Carnivore Grounds, Nairobi"></label>
+  <label>Ticket price in KES<input id="f-p" type="number" min="0" required placeholder="1500"></label>
+  <label>Tickets available<input id="f-q" type="number" min="1" required placeholder="500"></label>
+  <label class="full">What should people know?<textarea id="f-x" maxlength="400" placeholder="Line-up, dress code, parking, age limit."></textarea></label>
+  <div class="full"><button class="btn" type="submit">Publish event</button></div>
+ </form>
+</section>
+<section id="promote">
+ <h2>Promote and advertise</h2>
+ <p class="lead">Pick an event, pick a package, pay with M-Pesa. Promoted events show first and carry a badge.</p>
+ <label style="max-width:420px;margin-top:10px">Event to promote<select id="psel"></select></label>
+ <div class="pk" id="pk"></div>
+</section>
+<section id="about">
+ <h2>Built for Kenya’s event scene</h2>
+ <p class="lead">Pulse Events KE is a ticketing and event marketing platform. Fans find and book events in seconds, and organizers sell tickets and promote their events from one place.</p>
+ <div class="steps"><div class="panel"><b>1. Discover</b>Browse concerts, festivals, parties and conferences by category.</div><div class="panel"><b>2. Book</b>Pick your ticket and pay from your phone. Your ticket arrives by SMS and WhatsApp.</div><div class="panel"><b>3. Promote</b>Organizers boost their events, share on WhatsApp and reach more buyers.</div></div>
+</section>
+</main>
+<footer><div class="fw"><div><b class="logo">Pulse Events KE</b><p>Pulse Events KE is a ticketing and event marketing platform. We help Kenyan organizers sell tickets, promote their events and reach more fans, and we help fans find and book the best events in one place.</p></div><div><b>Explore</b><a href="#events">Events</a><a href="#post">Post an event</a><a href="#promote">Promote an event</a><a href="#about">About us</a></div><div><b>For organizers</b><span>Ticket sales</span><span>Event promotion</span><span>WhatsApp sharing</span></div></div><p class="cp">© 2026 Pulse Events KE. Nairobi, Kenya.</p></footer>
+<div class="dv" id="dv" hidden role="dialog" aria-modal="true" aria-label="Event details"><div class="in" id="dvin"></div></div>
+<div class="mp" id="mp" hidden><div class="box"><h3 id="mt" style="font:800 22px Syne,sans-serif;margin:0"></h3><label>M-Pesa phone number<input id="ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="0712 345 678"></label><div id="me" style="color:var(--a);font-size:14px;min-height:20px"></div><button class="btn" id="go">Send M-Pesa prompt</button><button class="btn ghost" id="x">Cancel</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)},f=function(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var CATS={'Music':0,'Conference':.58,'Nightlife':.83,'Sports':.33,'Comedy':.12,'Food and culture':.07,'Other':.7};
+var KEY='pulse_events_v1',events,cat='All';
+var seed=[
+{id:'e1',title:'PULSE Nairobi Festival',cat:'Music',date:'Dec 26–28, 2026',venue:'Uhuru Gardens, Nairobi',hue:0,promo:2,desc:'Three days, four stages and a light show for 60,000 people. Benga, Afro-fusion and electronic acts under one sky.',tiers:[{n:'Saturday',p:1500,l:240},{n:'3-Day Pass',p:3500,l:86},{n:'VIP Front Row',p:9500,l:12}]},
+{id:'e2',title:'Savanna Dev and AI Summit',cat:'Conference',date:'Feb 12, 2027',venue:'KICC, Nairobi',hue:.58,promo:0,desc:'One day of talks, workshops and hiring for Kenyan builders. Meet founders, engineers and investors from across East Africa.',tiers:[{n:'Standard',p:2500,l:300},{n:'Pro with workshops',p:6000,l:90},{n:'Startup table',p:15000,l:8}]},
+{id:'e3',title:'Diani Sunset Beach Rave',cat:'Nightlife',date:'Jan 2, 2027',venue:'Diani Beach, Kwale',hue:.83,promo:0,desc:'Sunset sets on the sand, then a long night by the Indian Ocean. Shuttles run from Mombasa.',tiers:[{n:'Early bird',p:1200,l:40},{n:'Regular',p:1800,l:400},{n:'VIP cabana',p:7500,l:15}]}];
+try{events=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!events||!events.length)events=seed;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(events))}catch(e){}}
+var tt;function toast(m){var e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){e.classList.remove('show')},3600)}
+function hsl(h,l,s){return'hsl('+Math.round(((h%1)+1)%1*360)+' '+(s||80)+'% '+l+'%)'}
+var thT=0;function theme(h){thT=h;var r=document.documentElement.style;r.setProperty('--a',hsl(h,58,85));r.setProperty('--b',hsl(h+.3,52,85))}
+var min=function(e){return Math.min.apply(null,e.tiers.map(function(t){return t.p}))};
+var byId=function(id){return events.filter(function(e){return e.id===id})[0]};
+
+/* Event list */
+function render(){
+ var cs=['All'].concat(Object.keys(CATS));
+ $('#cats').innerHTML=cs.map(function(c){return'<button class="chip'+(c===cat?' on':'')+'" data-c="'+c+'" aria-pressed="'+(c===cat)+'">'+c+'</button>'}).join('');
+ var list=events.filter(function(e){return cat==='All'||e.cat===cat}).sort(function(a,b){return b.promo-a.promo});
+ $('#grid').innerHTML=list.length?list.map(function(e){return'<article class="ev" data-id="'+e.id+'"><div class="art" style="background:linear-gradient(135deg,'+hsl(e.hue,44)+','+hsl(e.hue+.15,16)+')">'+esc(e.title)+(e.promo>1?'<span class="badge">Promoted</span>':e.promo?'<span class="badge">Boosted</span>':'')+'</div><div class="bd"><b>'+esc(e.cat)+'</b><span>'+esc(e.date)+'</span><span>'+esc(e.venue)+'</span><span>From KES '+f(min(e))+'</span><div class="more"><span>'+esc((e.desc||'').slice(0,160))+'</span><span>'+e.tiers.map(function(t){return esc(t.n)+' KES '+f(t.p)}).join(', ')+'</span><div class="clip">Preview clip plays here</div></div><div class="row"><button class="btn ghost" data-m="1" aria-expanded="false">View more</button><button class="btn" data-o="1">Open event page</button></div></div></article>'}).join(''):'<p class="lead">No events here yet. Be the first to post one.</p>';
+ $('#psel').innerHTML=events.map(function(e){return'<option value="'+e.id+'">'+esc(e.title)+'</option>'}).join('');
+ var top=events.filter(function(e){return e.promo>1}).sort(function(a,b){return b.promo-a.promo})[0];
+ $('#feat').innerHTML=top?'<div class="row"><a class="chip" href="#event-'+top.id+'">Featured now: '+esc(top.title)+', '+esc(top.date)+'</a></div>':'';
+}
+$('#cats').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(b){cat=b.dataset.c;if(CATS[cat]!==undefined)theme(CATS[cat]);render()}});
+$('#grid').addEventListener('click',function(e){var a=e.target.closest('.ev');if(!a)return;var m=e.target.closest('[data-m]');if(m){var op=a.classList.toggle('open');m.textContent=op?'View less':'View more';m.setAttribute('aria-expanded',op);return}if(e.target.closest('[data-o]'))location.hash='event-'+a.dataset.id});
+$('#grid').addEventListener('pointerover',function(e){var b=e.target.closest('.ev');if(b){var v=byId(b.dataset.id);if(v)theme(v.hue)}});
+
+/* Event page */
+function show(){
+ var m=location.hash.match(/^#event-(\w+)$/),e=m&&byId(m[1]),d=$('#dv');
+ if(!e){d.hidden=true;BG.off();return}
+ theme(e.hue);d.hidden=false;d.scrollTop=0;BG.on(e);
+ $('#dvin').innerHTML='<button class="btn ghost" id="close">Back to events</button><div class="row" style="margin-top:22px"><span class="chip">'+esc(e.cat)+'</span>'+(e.promo?'<span class="chip">Promoted</span>':'')+'</div><h2>'+esc(e.title)+'</h2><div class="row"><span class="chip">'+esc(e.date)+'</span><span class="chip">'+esc(e.venue)+'</span></div><p class="lead">'+esc(e.desc||'')+'</p>'+'<div class="panel"><div class="clip" style="height:200px">Trailer or live video plays here (still image on slow data)</div></div><h3>Highlights</h3><div class="tiles">'+(e.desc||'').split('. ').filter(Boolean).concat([e.venue,e.date]).slice(0,3).map(function(t,i){return'<div class="tile" style="background:linear-gradient(135deg,'+hsl(e.hue+i*.06,36)+',rgba(0,0,0,.6))">'+esc(t.replace(/\.$/,''))+'</div>'}).join('')+'</div>'+
+ '<div class="panel">'+e.tiers.map(function(t,i){return'<div class="tier"><div><b>'+esc(t.n)+'</b><div class="left">'+(t.l>0?'Only '+f(t.l)+' left':'Sold out')+'</div></div><span class="p">KES '+f(t.p)+'</span><button class="btn buy" data-i="'+i+'"'+(t.l>0?'':' disabled')+'>Buy with M-Pesa</button></div>'}).join('')+'</div>'+
+ '<div class="panel"><h3>FAQs</h3><details><summary>How do I get my ticket?</summary><p>By SMS and WhatsApp right after your M-Pesa payment.</p></details><details><summary>Can I share this event?</summary><p>Yes, use the WhatsApp button below.</p></details></div>'+'<div class="row" style="margin-top:20px"><button class="btn ghost" id="wa">Share on WhatsApp</button><button class="btn ghost" id="lite">Lite mode: '+(BG.isLite()?'on':'off')+'</button><a class="btn ghost" href="#promote" id="pr">Promote this event</a></div>';
+ d.dataset.id=e.id;
+}
+$('#dv').addEventListener('click',function(ev){
+ var e=byId($('#dv').dataset.id);if(!e)return;
+ if(ev.target.closest('#close'))location.hash='events';
+ if(ev.target.closest('#lite')){var lo=BG.lite();ev.target.closest('#lite').textContent='Lite mode: '+(lo?'on':'off')}
+ var b=ev.target.closest('.buy');if(b){var t=e.tiers[+b.dataset.i];pay(e.title+', '+t.n+': KES '+f(t.p),function(){t.l--;save();show();toast('Payment received. Your ticket is on its way by SMS and WhatsApp.')})}
+ if(ev.target.closest('#wa')){var m='Join me at '+e.title+' ('+e.date+', '+e.venue+'). Tickets on PULSE: '+location.href;try{navigator.clipboard.writeText(m)}catch(x){}try{window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}catch(x){}toast('Invite ready to share.')}
+ if(ev.target.closest('#pr')){$('#psel').value=e.id;$('#dv').hidden=true}
+});
+addEventListener('hashchange',show);
+
+/* M-Pesa prompt (simulated) */
+var done=null;
+function pay(label,cb){done=cb;$('#mt').textContent=label;$('#me').textContent='';$('#mp').hidden=false;$('#ph').focus()}
+$('#x').addEventListener('click',function(){$('#mp').hidden=true});
+$('#go').addEventListener('click',function(){var v=$('#ph').value.replace(/[\s-]/g,'');
+ if(!/^(\+?254|0)?[17]\d{8}$/.test(v)){$('#me').textContent='Enter a valid Safaricom or Airtel number, like 0712 345 678.';return}
+ $('#mp').hidden=true;toast('M-Pesa prompt sent to '+v+'. Enter your PIN to confirm.');var c=done;setTimeout(function(){if(c)c()},1800)});
+
+/* Post form */
+var o='';Object.keys(CATS).forEach(function(c){o+='<option>'+c+'</option>'});$('#f-c').innerHTML=o;
+$('#form').addEventListener('submit',function(ev){ev.preventDefault();
+ var d=new Date($('#f-d').value+'T12:00:00'),c=$('#f-c').value;
+ var n={id:'u'+Date.now().toString(36),title:$('#f-t').value.trim(),cat:c,date:d.toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'}),venue:$('#f-v').value.trim(),hue:CATS[c],promo:0,desc:$('#f-x').value.trim(),tiers:[{n:'General',p:+$('#f-p').value,l:+$('#f-q').value}]};
+ events.push(n);save();render();this.reset();toast('Published. Boost it below to reach more people.');location.hash='event-'+n.id});
+
+/* Promotion packages */
+var PK=[{n:'Boost',p:2000,f:['Top of its category for 7 days','Boosted badge','WhatsApp broadcast to fans']},
+{n:'Spotlight',p:5000,f:['Everything in Boost','Featured on the home page','Social media ad campaign'],hot:1},
+{n:'Takeover',p:15000,f:['Everything in Spotlight','Your event drives the 3D homepage','Influencer push and email blast']}];
+$('#pk').innerHTML=PK.map(function(k,i){return'<div class="panel"><h3>'+k.n+'</h3><div class="price"><small style="font:600 16px DM Sans,sans-serif">KES</small> '+f(k.p)+'</div><ul>'+k.f.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="btn" data-k="'+i+'">Promote with '+k.n+'</button></div>'}).join('');
+$('#pk').addEventListener('click',function(ev){var b=ev.target.closest('[data-k]');if(!b)return;var k=PK[+b.dataset.k],e=byId($('#psel').value);if(!e)return;
+ pay(k.n+' for '+e.title+': KES '+f(k.p),function(){e.promo=Math.max(e.promo,+b.dataset.k+1);save();render();toast(e.title+' is now promoted.')})});
+
+/* Live purchase feed */
+var nm=['Wanjiru','Otieno','Achieng','Kiprop','Amina','Mwangi','Njeri','Kamau'],ct=['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Nyeri','Kisii'];
+setInterval(function(){if(!$('#mp').hidden)return;var e=events[Math.random()*events.length|0];toast(nm[Math.random()*8|0]+' from '+ct[Math.random()*8|0]+' just bought a ticket to '+e.title)},14000);
+/* Event page cinematic backgrounds: a different world per category */
+var BG=(function(){
+var bgw=$('#bgw'),c=$('#bg2'),x=c.getContext('2d'),W,H,T=0,sp=0,open=false,run=false,scn='conf',lite=false,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SCN={Music:'fest',Sports:'fest',Comedy:'fest',Conference:'conf',Nightlife:'beach','Food and culture':'beach',Other:'conf'};
+var rn=function(n){return Math.random()*n},mxc=function(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t)})};
+function sz(){var d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0)}
+addEventListener('resize',sz);sz();
+var dust=[],nodes=[],stars=[],lant=[],crowd=[],i;
+for(i=0;i<110;i++)dust.push({x:rn(1),y:rn(1),s:rn(1.8)+.4,v:rn(.05)+.02});
+for(i=0;i<70;i++)nodes.push({x:rn(1),y:rn(1),vx:(rn(1)-.5)*.0004,vy:(rn(1)-.5)*.0004});
+for(i=0;i<140;i++)stars.push({x:rn(1),y:rn(.6),s:rn(1.5)+.3,p:rn(6)});
+for(i=0;i<16;i++)lant.push({x:rn(1),y:rn(1),s:rn(8)+5,v:rn(.03)+.01,p:rn(6)});
+for(i=0;i<70;i++)crowd.push({x:i/69,r:9+rn(6),p:rn(6),arm:rn(1)>.6});
+function grad(s){var g=x.createLinearGradient(0,0,0,H);s.forEach(function(a){g.addColorStop(a[0],a[1])});x.fillStyle=g;x.fillRect(0,0,W,H)}
+function motes(col,n){x.fillStyle=col;for(var i=0;i<n;i++){var d=dust[i];d.y-=d.v*.003;if(d.y<0)d.y=1;x.globalAlpha=.5;x.beginPath();x.arc(d.x*W+Math.sin(T+d.s*9)*12,d.y*H,d.s,0,6.3);x.fill()}x.globalAlpha=1}
+var SC={
+fest:function(){grad([[0,'#07020f'],[.7,'#2a0a22'],[1,'#12030f']]);var sy=H*.66;x.globalCompositeOperation='lighter';
+for(var i=0;i<9;i++){var sx=W*(.12+.76*i/8),a=-Math.PI/2+Math.sin(T*.9+i*.8)*.75,w=.035,L=H*1.3;x.fillStyle='hsla('+((i*40+T*30)%360)+',100%,60%,.16)';x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+Math.cos(a-w)*L,sy+Math.sin(a-w)*L);x.lineTo(sx+Math.cos(a+w)*L,sy+Math.sin(a+w)*L);x.fill()}
+x.globalCompositeOperation='source-over';motes('#ffd9a0',70);x.fillStyle='#06020a';x.fillRect(W*.08,sy,W*.84,H*.12);x.fillStyle='rgba(255,90,60,.8)';x.fillRect(W*.08,sy,W*.84,3);
+x.fillStyle='#030107';crowd.forEach(function(c){var px=c.x*W,py=H*.9+Math.sin(T*3+c.p)*5-(c.x*7%3)*8;x.beginPath();x.arc(px,py,c.r,0,6.3);x.fill();x.fillRect(px-c.r*1.3,py+c.r*.6,c.r*2.6,H);if(c.arm)x.fillRect(px+c.r*.8,py-c.r*2.2+Math.sin(T*4+c.p)*6,3,c.r*2.4)})},
+conf:function(){grad([[0,'#030a1c'],[1,'#082544']]);var sx=W*(.5+.3*Math.sin(T*.4));x.fillStyle='rgba(130,200,255,.07)';x.beginPath();x.moveTo(sx,0);x.lineTo(sx-W*.18,H);x.lineTo(sx+W*.18,H);x.fill();
+nodes.forEach(function(n){n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>1)n.vx*=-1;if(n.y<0||n.y>1)n.vy*=-1});
+for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){var a=nodes[i],b=nodes[j],d=Math.hypot((a.x-b.x)*W,(a.y-b.y)*H);if(d<150){x.strokeStyle='rgba(120,210,255,'+(.4*(1-d/150))+')';x.beginPath();x.moveTo(a.x*W,a.y*H);x.lineTo(b.x*W,b.y*H);x.stroke()}}
+nodes.forEach(function(n,i){x.fillStyle=i%9?'#9fe3ff':'#ffd166';x.beginPath();x.arc(n.x*W,n.y*H,i%9?2.2:4,0,6.3);x.fill()});motes('#8fd0ff',30)},
+beach:function(){var p=Math.min(1,sp),t1=mxc([255,122,61],[5,6,26],p),t2=mxc([122,42,106],[11,16,48],p),t3=mxc([27,20,64],[16,26,58],p),q=function(a){return'rgb('+a.join(',')+')'};
+grad([[0,q(t3)],[.55,q(t2)],[.75,q(t1)],[1,q(t2)]]);
+stars.forEach(function(s){x.globalAlpha=p*(.5+.5*Math.sin(T*2+s.p));x.fillStyle='#fff';x.fillRect(s.x*W,s.y*H,s.s,s.s)});x.globalAlpha=1;
+var sy=H*(.55+.25*p),g=x.createRadialGradient(W*.5,sy,0,W*.5,sy,H*.3);g.addColorStop(0,'rgba(255,200,120,'+(.9-.8*p)+')');g.addColorStop(1,'transparent');x.fillStyle=g;x.fillRect(0,0,W,H);
+for(var k=0;k<4;k++){x.fillStyle='hsl('+(215+k*4)+','+(55-k*5)+'%,'+(Math.max(4,22-k*4-p*12))+'%)';x.beginPath();x.moveTo(0,H);for(var px=0;px<=W;px+=14)x.lineTo(px,H*(.7+k*.055)+Math.sin(px*.012+T*(1+k*.4)+k)*(8+k*3));x.lineTo(W,H);x.fill()}
+[[.08,1],[.93,-1]].forEach(function(q){var bx=W*q[0],tx=bx+q[1]*60,ty=H*.5;x.lineWidth=11;x.strokeStyle='#04060d';x.beginPath();x.moveTo(bx,H);x.quadraticCurveTo(bx+q[1]*10,H*.7,tx,ty);x.stroke();x.lineWidth=4;for(var f=0;f<7;f++){var a=-Math.PI*(f/6)+Math.sin(T+f)*.05;x.beginPath();x.moveTo(tx,ty);x.quadraticCurveTo(tx+Math.cos(a)*50,ty+Math.sin(a)*60-20,tx+Math.cos(a)*95,ty+Math.sin(a)*40+45);x.stroke()}});
+lant.forEach(function(l){l.y-=l.v*.003;if(l.y<-.05)l.y=1.05;var lx=l.x*W+Math.sin(T+l.p)*18,ly=l.y*H;x.globalAlpha=.25*(.4+p);x.fillStyle='#ffb347';x.beginPath();x.arc(lx,ly,l.s*2.2,0,6.3);x.fill();x.globalAlpha=.9;x.beginPath();x.arc(lx,ly,l.s*.45,0,6.3);x.fill();x.globalAlpha=1})}};
+function loop(){if(!open){run=false;return}T+=.016;if(!(lite||rm)||T<.2)SC[scn]();requestAnimationFrame(loop)}
+$('#dv').addEventListener('scroll',function(){sp=this.scrollTop/Math.max(1,this.scrollHeight-this.clientHeight)},{passive:true});
+return{on:function(e){scn=SCN[e.cat]||'conf';T=0;sp=0;open=true;bgw.hidden=false;$('#gl').style.display='none';if(!run){run=true;loop()}},
+off:function(){open=false;run=false;bgw.hidden=true;$('#gl').style.display=''},
+isOpen:function(){return open},lite:function(){lite=!lite;T=0;return lite},isLite:function(){return lite}}
+})();
+render();theme(0);show();
+
+/* 3D tunnel */
+var cv=$('#gl'),R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){document.body.style.background='radial-gradient(circle at 50% 40%,#1c5a34,#07100b 70%)';return}
+R.setPixelRatio(Math.min(devicePixelRatio,2));
+var S=new THREE.Scene();S.background=new THREE.Color(0x07100b);S.fog=new THREE.FogExp2(0x07100b,.012);
+var C=new THREE.PerspectiveCamera(70,1,.1,600),LEN=420,N=56,rings=[],beams=[],col=new THREE.Color();
+for(var i=0;i<N;i++){var r=new THREE.Mesh(new THREE.TorusGeometry(9+Math.sin(i*.7)*1.5,.07,8,72),new THREE.MeshBasicMaterial({transparent:true,opacity:.85}));r.position.z=-i*(LEN/N);r.userData.i=i;S.add(r);rings.push(r)}
+var pc=1800,pp=new Float32Array(pc*3);
+for(var j=0;j<pc;j++){var a=Math.random()*6.283,rd=3+Math.random()*16;pp[j*3]=Math.cos(a)*rd;pp[j*3+1]=Math.sin(a)*rd;pp[j*3+2]=-Math.random()*LEN}
+var pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+var pm=new THREE.PointsMaterial({size:.14,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false});S.add(new THREE.Points(pg,pm));
+for(var k=0;k<7;k++){var b=new THREE.Mesh(new THREE.CylinderGeometry(.15,2.6,60,16,1,true),new THREE.MeshBasicMaterial({transparent:true,opacity:.16,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));b.position.set((k-3)*4,-6,-LEN-10);S.add(b);beams.push(b)}
+function size(){R.setSize(innerWidth,innerHeight,false);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}
+addEventListener('resize',size);size();
+var prog=0,cur=0,mx=0,my=0,th=0,t0=performance.now();
+function sc(){var h=document.documentElement.scrollHeight-innerHeight;prog=h>0?Math.min(1,scrollY/h):0}
+addEventListener('scroll',sc,{passive:true});sc();
+addEventListener('pointermove',function(e){mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2});
+(function frame(){if(BG.isOpen()){requestAnimationFrame(frame);return}var t=(performance.now()-t0)/1000;cur+=(prog-cur)*.06;
+ var d=((thT-th+1.5)%1)-.5;th+=d*.05;
+ var z=-cur*(LEN-30);C.position.set(mx*1.2+Math.sin(t*.4)*.3,-my*.8+Math.cos(t*.3)*.2,z);
+ C.rotation.z=Math.sin(cur*8)*.05-mx*.03;C.lookAt(C.position.x*.3,C.position.y*.3,z-20);
+ var h=th+cur*.2;
+ rings.forEach(function(r){col.setHSL((h+r.userData.i*.006)%1,.9,.58);r.material.color.copy(col);r.rotation.z=t*.12*(r.userData.i%2?1:-1)+r.userData.i*.1;var s=1+Math.sin(t*2+r.userData.i*.5)*.03;r.scale.set(s,s,1)});
+ col.setHSL((h+.1)%1,.9,.65);pm.color.copy(col);
+ beams.forEach(function(b,i){b.material.color.setHSL((h+i*.05)%1,.95,.6);b.rotation.z=Math.sin(t*.8+i)*.35;b.material.opacity=.08+cur*.2});
+ R.render(S,C);requestAnimationFrame(frame)})();
+})();
+</script></body></html>
