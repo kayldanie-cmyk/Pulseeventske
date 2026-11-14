@@ -643,6 +643,55 @@ summary {
   }
 }
 
+.mpesa-pulse-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid var(--a);
+  position: relative;
+  animation: mpesa-pulse 1.6s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mpesa-pulse-ring::after {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--a);
+}
+
+@keyframes mpesa-pulse {
+  0% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 16px rgba(74, 222, 128, 0);
+  }
+  100% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
+  animation: live-blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes live-blink {
+  from { opacity: 0.3; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+
 /* Toast Notifications */
 .toast {
   position: fixed;
