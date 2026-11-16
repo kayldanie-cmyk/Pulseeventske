@@ -4,9 +4,9 @@
  * Includes graceful simulation mode for development and testing.
  */
 
-const AT_API_KEY = process.env.AFRICASTALKING_API_KEY ?? "";
-const AT_USERNAME = process.env.AFRICASTALKING_USERNAME ?? "sandbox";
-const AT_SENDER_ID = process.env.AFRICASTALKING_SENDER_ID ?? "PULSE";
+const AT_API_KEY = process.env.AFRICASTALKING_API_KEY || process.env.AT_API_KEY || "";
+const AT_USERNAME = process.env.AFRICASTALKING_USERNAME || process.env.AT_USERNAME || "sandbox";
+const AT_SENDER_ID = process.env.AFRICASTALKING_SENDER_ID || process.env.AT_SENDER_ID || "PULSE";
 
 export interface TicketNotificationPayload {
   phone: string;
