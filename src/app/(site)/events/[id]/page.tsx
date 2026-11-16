@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/ui/Navbar";
@@ -9,6 +10,30 @@ import { formatKES, formatDate, formatDateRange } from "@/lib/format";
 
 interface Props {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const event = SEED_EVENTS.find((e) => e.id === id);
+  if (!event) return { title: "Event Not Found | Pulse Events KE" };
+
+  return {
+    title: `${event.title} - Tickets & Info | Pulse Events KE`,
+    description: event.description,
+    openGraph: {
+      title: `${event.title} | Pulse Events KE`,
+      description: event.description,
+      type: "website",
+      locale: "en_KE",
+      url: `https://pulseevents.co.ke/events/${event.id}`,
+      siteName: "Pulse Events KE",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: event.title,
+      description: event.description,
+    },
+  };
 }
 
 export async function generateStaticParams() {
@@ -35,8 +60,45 @@ export default async function EventDetailPage({ params }: Props) {
     `Check out ${event.title} in Kenya (${dateLabel} at ${event.venue}) on Pulse Events KE!`
   );
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description: event.description,
+    startDate: event.dateStart,
+    endDate: event.dateEnd || event.dateStart,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: event.venue,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: event.venue.includes("Diani") ? "Diani" : "Nairobi",
+        addressCountry: "KE",
+      },
+    },
+    offers: {
+      "@type": "Offer",
+      url: `https://pulseevents.co.ke/events/${event.id}`,
+      price: event.price,
+      priceCurrency: "KES",
+      availability: "https://schema.org/InStock",
+      validFrom: "2026-01-01T00:00:00+03:00",
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "Pulse Events KE",
+      url: "https://pulseevents.co.ke",
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
       <main className="pt-20 sm:pt-24 pb-16 min-h-screen px-4 sm:px-6">
         <div className="max-w-[1000px] mx-auto">

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { orderStore } from "@/lib/mpesa";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { generateTicketId, hashTicket } from "@/lib/tickets";
+import { sendTicketSMS } from "@/lib/notifications";
 
 interface DarajaCallbackItem {
   Name: string;
@@ -107,6 +108,14 @@ export async function POST(req: NextRequest) {
           mpesaReceipt: receiptNumber,
           tickets: generatedTickets,
         });
+
+        sendTicketSMS({
+          phone: order.phone,
+          eventTitle: "Pulse Event",
+          tierName: "Ticket Pass",
+          ticketCode: generatedTickets[0]?.code || "TKT-PULSE",
+          receiptNumber,
+        }).catch((err) => console.error("Ticket SMS notification error:", err));
       }
     } else {
       // 3. Handle Payment Failure / Cancellation (ResultCode !== 0)

@@ -6,6 +6,7 @@ import {
 } from "@/lib/mpesa";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { generateTicketId, hashTicket } from "@/lib/tickets";
+import { sendTicketSMS } from "@/lib/notifications";
 
 export async function POST(req: NextRequest) {
   try {
@@ -170,6 +171,14 @@ export async function POST(req: NextRequest) {
             mpesaReceipt: receipt,
             tickets,
           });
+
+          sendTicketSMS({
+            phone: order.phone,
+            eventTitle: "Pulse Event",
+            tierName: tierName || "Ticket Pass",
+            ticketCode: tickets[0].code,
+            receiptNumber: receipt,
+          }).catch((err) => console.error("Simulated ticket SMS error:", err));
         }
       }, 3000);
     }

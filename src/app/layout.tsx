@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
     "Discover, buy tickets, and promote unforgettable events across Kenya — from Nairobi festivals to Diani beach raves.",
   applicationName: "Pulse Events KE",
   authors: [{ name: "Pulse Events KE" }],
+  manifest: "/manifest.json",
   formatDetection: {
     telephone: false,
     date: false,
@@ -24,6 +26,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>",
+    apple: "/icons/icon-192.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Pulse KE",
   },
 };
 
@@ -36,6 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased overflow-x-hidden min-h-screen bg-[var(--bg)] text-[var(--ink)]">
         {children}
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

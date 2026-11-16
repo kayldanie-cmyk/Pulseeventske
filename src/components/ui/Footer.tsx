@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--line)] bg-[var(--card)]">
@@ -22,19 +24,41 @@ export default function Footer() {
         {/* Col 2 — Links */}
         <div>
           <h4 className="text-sm font-semibold text-[var(--ink)] mb-3 uppercase tracking-wider">
-            Quick Links
+            Explore &amp; Organize
           </h4>
-          <ul className="space-y-2 list-none p-0">
-            {["Events", "Post an Event", "Promote", "About"].map((l) => (
-              <li key={l}>
-                <a
-                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-sm text-[var(--mute)] hover:text-[var(--a)] transition-colors no-underline"
-                >
-                  {l}
-                </a>
-              </li>
-            ))}
+          <ul className="space-y-2 list-none p-0 text-sm">
+            <li>
+              <Link
+                href="/#events"
+                className="text-[var(--mute)] hover:text-[var(--a)] transition-colors no-underline"
+              >
+                Explore Events
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/#post"
+                className="text-[var(--mute)] hover:text-[var(--a)] transition-colors no-underline"
+              >
+                Post an Event
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/dashboard"
+                className="text-[var(--mute)] hover:text-[var(--a)] transition-colors no-underline"
+              >
+                Organizer Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/scanner"
+                className="text-[var(--mute)] hover:text-[var(--a)] transition-colors no-underline"
+              >
+                Gate Scanner Terminal
+              </Link>
+            </li>
           </ul>
         </div>
 
